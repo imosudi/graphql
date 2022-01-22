@@ -1,6 +1,7 @@
 from app import db, User, Post
 
-db.create_all()     # create tables from models
+# Application DB migrated to existing remote database 
+'''db.create_all()     # create tables from models
 
 user1 = User(
     name="Mosudi Isiaka",
@@ -24,7 +25,7 @@ post2.author = user2
 post3 = Post()
 post3.title = "Blog Post Title 3"
 post3.body = "This is yet another blog post 3"
-post3.author = user1
+post3.author = user1'''
 
 db.session.add(post1)
 db.session.add(user1)
