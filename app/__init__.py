@@ -42,8 +42,5 @@ from .models import *
 from .graphQLSchema import *
 from .graphQLqueryAndmutation import *
 
-# Flask Rest & Graphql Routes
-@app.route('/')
-def hello_world():
-    return 'Hello From Graphql Tutorial!'
+from .routes import *
 
