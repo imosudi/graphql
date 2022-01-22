@@ -13,8 +13,6 @@ DB_NAME="graphqldb"
 
 
 
-
-
 user:
 id
 email
