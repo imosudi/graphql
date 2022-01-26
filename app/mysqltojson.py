@@ -20,6 +20,7 @@ class flatToCascadedJson(object):
         if dbtable not in ['patients', 'labtests', 'transactions', 'user']:
             return {'response':'Not available in database'}, inspect(engine)
         dbtableData = engine.execute('SELECT * FROM {dbtable}' .format(dbtable=dbtable))
+        engine.dispose()
         dataList = json.dumps([dict(row) for row in dbtableData], default=alchemyencoder, indent=4)
         with open(f'{pwd}/table_json/{dbtable}.json', 'w+') as file:
             file.write(dataList) 
