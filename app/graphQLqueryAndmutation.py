@@ -120,11 +120,11 @@ class PatientEnrol(graphene.Mutation):
     def mutate(cls, __, info, patientFirstname,
          patientLastname, patientMiddlename,
            patientSex,  patientTitle,  ageGrade, 
-           patientDateofBirth, patientStatus, patientType, 
+            patientStatus, patientType, 
            patientID, patientEmail, patientPhonenumber, 
            patientwhatsappnumber,   patientAddress,   patientCity,  
            patientState,    patientCountry, patientpersonalEnroledby):
-        #patient = Patients.query.filter_by(patientID=patientID).first()        
+        #patient = Patients.query.filter_by(patientID=patientID).first()  patientDateofBirth,      
 
         try:
             new_patient = Patients(patientFirstname		=  patientFirstname,
