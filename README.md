@@ -22,12 +22,17 @@ DB_NAME="graphqldb"
 # Consider editing config.py    
  config,py
 
+# Review and edit models.py vis-a-vis graphQLqueryAndmutation.py    
+ app/models.py  
+ app/graphQLqueryAndmutation.py     
+ 
+
 # Create Python3 virtual environment    
  python3 -m venv venv
 
 # Start virtual environment     
  source venv/bin/activate   
- 
+
 
 # Flask-Migrate 
 Run:    
