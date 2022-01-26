@@ -11,25 +11,16 @@ DB_PASS="PASS****WORD"
 
 DB_NAME="graphqldb"
 
+# Consider editing config.py    
 
+# Flask-Migrate 
+Run:    
+ flask db init   
+ flask db migrate   
+ flask db upgrade   
 
-user:
-id
-email
-last_login_at
-password
-current_login_at
-last_login_ip
-current_login_ip
-login_count
-active
-confirmed_at
-firstname
-lastname
-phonenumber
-altnumber
-country
-city
-state
-zip_code
-location
+# Run       
+ python main.py     
+ 
+
+Voila!
