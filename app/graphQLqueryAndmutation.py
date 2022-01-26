@@ -92,7 +92,7 @@ class CreatePost(graphene.Mutation):
 class PatientEnrol(graphene.Mutation):
     error = graphene.String()
     message = graphene.String()
-    success = graphene.Boolean()
+    success_msg = graphene.Boolean()
 
     class Arguments:
         patientFirstname		= graphene.String(required=True)
@@ -148,7 +148,7 @@ class PatientEnrol(graphene.Mutation):
             db.session.commit()
         except IntegrityError as e:
             return PatientEnrol(error=f'{e.orig}')
-        return PatientEnrol(success = True, message=f'{patientLastname} {patientFirstname} with ID : {patientID}')
+        return PatientEnrol(success_msg = True, message=f'{patientLastname} {patientFirstname} with ID : {patientID}')
         
 '''class Mutation(graphene.ObjectType):
     save_patient = PatientEnrol.Field()'''   
@@ -157,7 +157,7 @@ class PatientEnrol(graphene.Mutation):
 class TransactionAdd(graphene.Mutation):
     error = graphene.String()
     message = graphene.String()
-    success = graphene.Boolean()
+    success_msg = graphene.Boolean()
 
     class Arguments:
         transaction_id 		= graphene.Int()
