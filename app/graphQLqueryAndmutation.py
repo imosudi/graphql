@@ -227,10 +227,10 @@ class TransactionAdd(graphene.Mutation):
 class LabtestAdd(graphene.Mutation):
     error = graphene.String()
     message = graphene.String()
-    suucces = graphene.Boolean()
+    success_msg = graphene.Boolean()
     
     class Arguments:
-        test_id 		    = graphene.Int()
+        #test_id 		    = graphene.Int()
         testType	 		= graphene.String(required=True) # CLINICAL_CHEMISTRY, ENDOSEROLOGY, HAEMATOLOGY, MICROBIOLOGY, SEROLOGY
         testBottleType		= graphene.String(required=True)
         testName	 		= graphene.String(required=True)
@@ -253,7 +253,7 @@ class LabtestAdd(graphene.Mutation):
             db.session.commit()
         except IntegrityError as e:
             return LabtestAdd(error=f'{e.orig}')
-        return LabtestAdd(success = True, message=f'test added to lab store')
+        return LabtestAdd(success_msg = True, message=f'test added to lab store')
    
 class Mutation(graphene.ObjectType):
     save_transaction = TransactionAdd.Field() 

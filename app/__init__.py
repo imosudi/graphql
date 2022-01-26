@@ -5,7 +5,7 @@ pip install graphene==2.1.8
 """
 import os
 
-import graphene
+#import graphene
 from flask import Flask, config
 from flask_graphql import GraphQLView
 from flask_sqlalchemy import SQLAlchemy
