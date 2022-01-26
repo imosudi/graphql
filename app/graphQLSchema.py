@@ -151,7 +151,9 @@ class PatientEnrol(graphene.Mutation):
         return PatientEnrol(success = True, message=f'{patientLastname} {patientFirstname} with ID : {patientID}')
         
 class Mutation(graphene.ObjectType):
-    save_patient = PatientEnrol.Field()                        
+    save_patient = PatientEnrol.Field()   
+
+
 class TransactionAdd(graphene.Mutation):
     error = graphene.String()
     message = graphene.String()
@@ -160,7 +162,7 @@ class TransactionAdd(graphene.Mutation):
     class Arguments:
         transaction_id 		= graphene.Int()
         CurrentpatientID 	=  graphene.String(required=True)
-        barcode 			=  graphene.String(Required=True)
+        barcode 			=  graphene.String(required=True)
         fullName	 		=  graphene.String(required=True)
         regtype	 		    =  graphene.String(required=True)
         sex	 		        =  graphene.String(required=True)
@@ -190,7 +192,7 @@ class TransactionAdd(graphene.Mutation):
         phlebotomy_processed	=  graphene.Boolean() #db.Column(db.Boolean(), default=False) 
         paymentupdateamount	    =  graphene.String(required=True)
         paymentupdateby		    =  graphene.String(required=True)
-        paymentupdateTime		= graphene.DateTime() # db.Column(db.DateTime, server_default=None) # nullable=False),
+        paymentupdateTime		=  graphene.DateTime() # db.Column(db.DateTime, server_default=None) # nullable=False),
     
     transaction = graphene.Field(lambda: TransactionObject)
     
@@ -214,9 +216,14 @@ class TransactionAdd(graphene.Mutation):
                                         paymentupdateamount = 	paymentupdateamount, paymentupdateby =   paymentupdateby,
                                          paymentupdateTime =  paymentupdateTime)
         except IntegrityError as e:
-            return Transactions(error=f'{e.orig}')
-        return Transactions(success=True, message=f'Labsession Complete, you may print invoice/receipt for {barcode}')
-                
+            return TransactionAdd(error=f'{e.orig}')
+        return TransactionAdd(success=True, message=f'Labsession Complete, you may print invoice/receipt for {barcode}')
+
+class Mutation(graphene.ObjectType):
+    save_transaction = TransactionAdd.Field()   
+
+
+
 class LabtestAdd(graphene.Mutation):
     error = graphene.String()
     message = graphene.String()
