@@ -18,11 +18,13 @@ from flask_migrate import Migrate
 
 app = Flask(__name__)
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+
 
 #print(dbhost, dbname, dbuser, pw)
 
-"""# Database Configs [Check it base on other Database Configuration]
+"""
+basedir = os.path.abspath(os.path.dirname(__file__))
+# Database Configs [Check it base on other Database Configuration]
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.sqlite')
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True"""

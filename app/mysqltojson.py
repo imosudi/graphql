@@ -1,11 +1,19 @@
-from dbconnect import engine, alchemyencoder
-import json
+from sqlalchemy import create_engine, inspect
+import os, json
+#import requests
+import decimal, datetime
 
+from .dbconnect import engine, alchemyencoder
+#from .dbconnect import engine, alchemyencoder
+
+pwd = os.path.dirname(os.path.abspath(__file__))
 
 class flatToCascadedJson(object):
     def __init__(self, dbtable, *args):
         super(flatToCascadedJson, self).__init__(*args) 
         self.dbtable =dbtable
+        if not os.path.exists(f'{pwd}/table_json/'):
+            os.makedirs(f'{pwd}/table_json/')
     
     def reformatjson(self):
         dbtable = self.dbtable
@@ -13,13 +21,13 @@ class flatToCascadedJson(object):
             return {'response':'Not available in database'}, inspect(engine)
         dbtableData = engine.execute('SELECT * FROM {dbtable}' .format(dbtable=dbtable))
         dataList = json.dumps([dict(row) for row in dbtableData], default=alchemyencoder, indent=4)
-        with open(f'table_json/{dbtable}.json', 'w+') as file:
+        with open(f'{pwd}/table_json/{dbtable}.json', 'w+') as file:
             file.write(dataList) 
         file.close()
 
         if dbtable == 'patients':
            patientList = json.loads(dataList)
-           with open(f'table_json/{dbtable}_casded.json', 'w+') as file:
+           with open(f'{pwd}/table_json/{dbtable}_casded.json', 'w+') as file:
                for i in range(0, len(patientList)) :
                    data2 = json.dumps(
                        {
@@ -77,7 +85,7 @@ class flatToCascadedJson(object):
 
         elif dbtable == 'labtests' :
             testList = json.loads(dataList)
-            with open(f'table_json/{dbtable}_casded.json', 'w+') as file:
+            with open(f'{pwd}/table_json/{dbtable}_casded.json', 'w+') as file:
                for i in range(0, len(testList)) :
                    data2 = json.dumps(
                        {
@@ -100,7 +108,7 @@ class flatToCascadedJson(object):
 
         elif  dbtable == 'transactions'  :
             transactionList = json.loads(dataList)
-            with open(f'table_json/{dbtable}_casded.json', 'w+') as file:
+            with open(f'{pwd}/table_json/{dbtable}_casded.json', 'w+') as file:
                for i in range(0, len(transactionList)) :
                    data2 = json.dumps(
                        {
@@ -160,7 +168,7 @@ class flatToCascadedJson(object):
 
         elif dbtable == 'user' :
             userList = json.loads(dataList)
-            with open(f'table_json/{dbtable}_casded.json', 'w+') as file:
+            with open(f'{pwd}/table_json/{dbtable}_casded.json', 'w+') as file:
                 for i in range(0, len(userList)) :
                     data2 =json.dumps( 
                         {
