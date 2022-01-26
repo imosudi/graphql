@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 .sqlite
 .sqlite3
+table_json/
