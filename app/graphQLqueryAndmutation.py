@@ -4,6 +4,7 @@ from distutils.log import error
 from email import message
 ##from email import message
 from enum import unique
+from multiprocessing import connection
 ##from ftplib import error_perm
 import os
 ##from pyexpat import model
@@ -16,11 +17,20 @@ from flask_graphql import GraphQLView
 from flask_sqlalchemy import SQLAlchemy
 from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 
+
 #from pymysql import IntegrityError
 from sqlalchemy.exc import IntegrityError
 
 from .import db 
 from .models import *
+from .filters import *
+
+#from graphene_sqlalchemy_filter import FilterSet
+from graphene_sqlalchemy_filter import FilterableConnectionField
+
+#import filters
+
+ALL_OPERATIONS = ['eq', 'ne', 'like', 'ilike', 'is_null', 'in', 'not_in', 'lt', 'lte', 'gt', 'gte', 'range']
 
 # Objects Schema
 class PostObject(SQLAlchemyObjectType):
@@ -31,16 +41,21 @@ class PostObject(SQLAlchemyObjectType):
 class PatientObject(SQLAlchemyObjectType):
     class Meta:
         model = Patients
+        #filter_fields = ['patient_id', 'patientSex', 'patientPhonenumber', 'patientID', 'ageGrade']
         interfaces = (graphene.relay.Node,)
+
 
 class LabtestObject(SQLAlchemyObjectType):
     class Meta:
         model = Labtests
+        #filter_fields = ['test_id .''testName', 'testType', 'testmnemonics']
         interfaces = (graphene.relay.Node,)
 
 class TransactionObject(SQLAlchemyObjectType):
     class Meta:
         model = Transactions
+        #filter_fields = ['CurrentpatientID', 'barcode', 'billto', 'fullName', 'subtotal', 'total',
+        # 'payment', 'paymentmethod', 'transactTime', 'cashier']
         interfaces = (graphene.relay.Node,)
 
 class RoleObject(SQLAlchemyObjectType):
@@ -58,14 +73,34 @@ class Query(graphene.ObjectType):
     node = graphene.relay.Node.Field()
     all_posts       = SQLAlchemyConnectionField(PostObject)
     all_users       = SQLAlchemyConnectionField(UserObject)
-    all_patients    = SQLAlchemyConnectionField(PatientObject)
-    all_labtests    = SQLAlchemyConnectionField(LabtestObject)
-    all_transactions= SQLAlchemyConnectionField(TransactionObject)
+    #all_transactions= SQLAlchemyConnectionField(TransactionObject)
     all_roles       = SQLAlchemyConnectionField(RoleObject)
+    #all_patients    = SQLAlchemyConnectionField(PatientObject)
+    #all_labtests    = SQLAlchemyConnectionField(LabtestObject)
+    patientDetails   = FilterableConnectionField(connection=PatientObject, 
+                                                filters=PatientFilter())#, 
+                                                #sort=PatientObject.sort_argument())
+    laboratoryTests = FilterableConnectionField(connection=LabtestObject,
+                                                filters=LabtestFilter())
+    transactionDetails = FilterableConnectionField(connection=TransactionObject,
+                                                filters=TransactionFilter())
 
 
-# noinspection PyTypeChecker
-schema_query = graphene.Schema(query=Query)
+
+    '''# Added this
+    find_patients = graphene.Field(PatientObject, 
+                                    patient_id = graphene.Int(), 
+                                    patientSex = graphene.String(), 
+                                    patientPhonenumber = graphene.String(),
+                                    patientID = graphene.String(), ageGrade = graphene.String())
+
+    def resolve_find_patients(self, info, patient_id, patientID, patientSex,patientPhonenumber):
+        query = PatientObject.get_query(info)
+        return query.filter(Patients.patientID == patientID).first()'''
+
+
+    # noinspection PyTypeChecker
+schema_query = graphene.Schema(query=Query)#, type=[PatientObject])
 
 
 # Mutation Objects Schema
@@ -95,6 +130,7 @@ class PatientEnrol(graphene.Mutation):
     success_msg = graphene.Boolean()
 
     class Arguments:
+        patient_id 			    = graphene.Int() #(db.Integer, primary_key=True)
         patientFirstname		= graphene.String(required=True)
         patientLastname			= graphene.String(required=True)
         patientMiddlename		= graphene.String()
@@ -103,7 +139,7 @@ class PatientEnrol(graphene.Mutation):
         ageGrade				= graphene.String(required=True)
         patientStatus			= graphene.String(required=True)
         patientType			    = graphene.String(required=True)
-        patientID				= graphene.String(required=True)#, unique=True)	
+        patientID				= graphene.String(required=True) #@search #, unique=True)	
         patientEmail			= graphene.String(required=True)#, unique=True)#, unique=True)
         patientPhonenumber		= graphene.String(required=True)#, unique=True) #, unique=True)
         patientwhatsappnumber	= graphene.String(required=True)        
@@ -230,7 +266,7 @@ class LabtestAdd(graphene.Mutation):
     success_msg = graphene.Boolean()
     
     class Arguments:
-        #test_id 		    = graphene.Int()
+        test_id 		    = graphene.Int()
         testType	 		= graphene.String(required=True) # CLINICAL_CHEMISTRY, ENDOSEROLOGY, HAEMATOLOGY, MICROBIOLOGY, SEROLOGY
         testBottleType		= graphene.String(required=True)
         testName	 		= graphene.String(required=True)

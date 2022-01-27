@@ -115,6 +115,17 @@ class Transactions(db.Model):
 
     def __repr__(self):
         return '<Transactions %r>' % self.barcode
+        '''self.TransactionId
+        self.CurrentpatientID
+        self.barcode
+        self.billto
+        self.fullName
+        self.subtotal
+        self.total
+        self.payment
+        self.paymentmethod
+        self.transactTime
+        self.cashier'''
     
 class Patients(db.Model):
     __tablename__ = 'patients'
@@ -163,7 +174,12 @@ class Patients(db.Model):
     enrolment_Time			        = db.Column(db.DateTime, server_default=db.func.now())
     
     def __repr__(self):
-        return '<Patients %r>' % self.patientID
+        #return '<Patients %r >' % self.patientID
+        return '<Patients %r %r %r %r %r %r >' % self.id, self.patientID, self.patientLastname,
+        self.patientSex, self.ageGrade, self.patientFirstname
+    '''def __repr__(self):
+        return '<Patients {} {} {} {} {} {}>'.format(self.id, self.patientID, self.patientLastname,
+        self.patientSex, self.ageGrade, self.patientFirstname)'''
         
 class Labtests(db.Model):
     __tablename__ = 'labtests'
@@ -176,6 +192,8 @@ class Labtests(db.Model):
     testTAT			    = db.Column(db.String(100))
     testPrice			= db.Column(db.String(100)) 
 
-    def __repr__(self):
-        return '<Labtests %r>' % self.testmnemonics
-
+    '''def __repr__(self):
+        return '<Labtests %r %r %r %r>' % self.test_id, self.testName, self.testmnemonics, self.testType)
+'''
+    def __repr__(self) :
+        return '<Labtests {} {} {} {}>'.format(self.test_id, self.testName, self.testmnemonics, self.testType)
