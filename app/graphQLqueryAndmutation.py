@@ -33,10 +33,10 @@ from graphene_sqlalchemy_filter import FilterableConnectionField
 ALL_OPERATIONS = ['eq', 'ne', 'like', 'ilike', 'is_null', 'in', 'not_in', 'lt', 'lte', 'gt', 'gte', 'range']
 
 # Objects Schema
-class PostObject(SQLAlchemyObjectType):
+'''class PostObject(SQLAlchemyObjectType):
     class Meta:
         model = Post
-        interfaces = (graphene.relay.Node,)
+        interfaces = (graphene.relay.Node,)'''
 
 class PatientObject(SQLAlchemyObjectType):
     class Meta:
@@ -71,7 +71,7 @@ class UserObject(SQLAlchemyObjectType):
 
 class Query(graphene.ObjectType):
     node = graphene.relay.Node.Field()
-    all_posts       = SQLAlchemyConnectionField(PostObject)
+    #all_posts       = SQLAlchemyConnectionField(PostObject)
     all_users       = SQLAlchemyConnectionField(UserObject)
     #all_transactions= SQLAlchemyConnectionField(TransactionObject)
     all_roles       = SQLAlchemyConnectionField(RoleObject)
@@ -104,7 +104,7 @@ schema_query = graphene.Schema(query=Query)#, type=[PatientObject])
 
 
 # Mutation Objects Schema
-class CreatePost(graphene.Mutation):
+'''class CreatePost(graphene.Mutation):
     class Arguments:
         title = graphene.String(required=True)
         body = graphene.String(required=True)
@@ -120,7 +120,7 @@ class CreatePost(graphene.Mutation):
         db.session.add(post)
         db.session.commit()
         return CreatePost(post=post)
-
+'''
 '''class Mutation(graphene.ObjectType):
     save_post = CreatePost.Field()'''
 
@@ -295,7 +295,7 @@ class Mutation(graphene.ObjectType):
     save_transaction = TransactionAdd.Field() 
     save_labtest = LabtestAdd.Field()
     save_patient = PatientEnrol.Field()
-    save_post = CreatePost.Field()
+    #save_post = CreatePost.Field()
 
 
 # noinspection PyTypeChecker
