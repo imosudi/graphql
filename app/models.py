@@ -1,7 +1,7 @@
 # ------------------  Database Models ------------------
 from unicodedata import name
 from .import db
-from .models import *
+#from .models import *
 from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Boolean, DateTime, Column, Integer, \

@@ -1,4 +1,4 @@
-from .import app
+from app import app
 from .graphQLqueryAndmutation import *
 from flask_graphql import GraphQLView
 

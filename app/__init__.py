@@ -43,8 +43,8 @@ migrate = Migrate(app, db)
 
 
 from .models import *
-from .graphQLSchema import *
-from .graphQLqueryAndmutation import *
+from api.graphQLSchema import *
+from api.graphQLqueryAndmutation import *
 
 
 from .routes import *

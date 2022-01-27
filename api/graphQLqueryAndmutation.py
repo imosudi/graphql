@@ -21,8 +21,8 @@ from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 #from pymysql import IntegrityError
 from sqlalchemy.exc import IntegrityError
 
-from .import db 
-from .models import *
+from app import db 
+from app.models import *
 from .filters import *
 
 #from graphene_sqlalchemy_filter import FilterSet

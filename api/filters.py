@@ -1,6 +1,6 @@
 from graphene_sqlalchemy_filter import FilterSet
  
-from .models import *
+from app.models import *
 
 
  
